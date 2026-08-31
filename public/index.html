@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f6f2" />
+  <title>Routine King — 기억하지 않아도 되는 삶</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Routine King 홈">
+        <span class="brand-mark">R</span><span>Routine King</span>
+      </a>
+      <nav aria-label="주요 메뉴">
+        <a class="nav-item active" href="#"><span>⌂</span> 홈</a>
+        <a class="nav-item" href="#cycles"><span>↻</span> 내 사이클 <b>9</b></a>
+        <a class="nav-item" href="#history"><span>◷</span> 기록</a>
+        <a class="nav-item" href="#insights"><span>✦</span> 인사이트</a>
+      </nav>
+      <div class="nav-label">카테고리</div>
+      <nav class="category-nav">
+        <a href="#">🏠 <span>집</span><b>3</b></a><a href="#">🧴 <span>생활</span><b>2</b></a>
+        <a href="#">💆🏻‍♀️ <span>뷰티</span><b>2</b></a><a href="#">🏥 <span>건강</span><b>2</b></a>
+        <a class="add-category" href="#">＋ 새 카테고리</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="settings">⚙ &nbsp; 설정</button>
+        <div class="profile"><div class="avatar">민</div><div><strong>민지</strong><small>minji@email.com</small></div><span>•••</span></div>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <button class="mobile-menu" aria-label="메뉴 열기">☰</button>
+        <div><p class="eyebrow">2026년 8월 31일 월요일</p><h1>좋은 아침이에요, 민지님 <span>👋</span></h1></div>
+        <button class="icon-button" aria-label="알림">♧<i></i></button>
+      </header>
+
+      <section class="briefing">
+        <div class="brief-icon">✦</div>
+        <div class="brief-copy"><span>오늘의 라이프 브리핑</span><p>지금 챙길 일은 <strong>2개</strong>예요. 칫솔 교체가 3일 지났고,<br>고양이 모래도 이틀 정도 남았어요.</p></div>
+        <button>자세히 보기 <span>→</span></button>
+      </section>
+
+      <section class="status-section" id="cycles">
+        <div class="section-heading"><div><h2><span class="dot red"></span> 지금 챙겨야 해요</h2><p>예정일이 지났거나 얼마 남지 않은 항목이에요.</p></div><button class="text-button">전체 보기 &nbsp;→</button></div>
+        <div class="card-grid urgent-grid">
+          <article class="cycle-card urgent" data-name="칫솔 교체">
+            <div class="card-top"><span class="emoji pink">🪥</span><button class="more">•••</button></div>
+            <div class="card-title"><div><h3>칫솔 교체</h3><span>생활</span></div><strong>D+3</strong></div>
+            <div class="progress"><i style="width:100%"></i></div>
+            <div class="cycle-meta"><span>마지막 교체 <b>6월 28일</b></span><span>주기 <b>2개월</b></span></div>
+            <button class="complete">✓ &nbsp; 완료했어요</button>
+          </article>
+          <article class="cycle-card warning" data-name="고양이 모래">
+            <div class="card-top"><span class="emoji yellow">🐱</span><button class="more">•••</button></div>
+            <div class="card-title"><div><h3>고양이 모래</h3><span>반려동물</span></div><strong>약 2일</strong></div>
+            <div class="progress"><i style="width:92%"></i></div>
+            <div class="cycle-meta"><span>마지막 구매 <b>8월 9일</b></span><span>평균 <b>24일</b></span></div>
+            <button class="complete">✓ &nbsp; 구매했어요</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="status-section upcoming">
+        <div class="section-heading"><div><h2><span class="dot amber"></span> 곧 돌아와요</h2><p>앞으로 30일 안에 돌아오는 사이클이에요.</p></div><button class="text-button">전체 보기 &nbsp;→</button></div>
+        <div class="card-grid compact-grid">
+          <article class="mini-card"><span class="emoji lavender">💆🏻‍♀️</span><div><h3>피부관리</h3><p>9월 12일 · 3개월마다</p></div><strong>D-12</strong></article>
+          <article class="mini-card"><span class="emoji peach">✂️</span><div><h3>미용실</h3><p>9월 23일 · 평균 7주</p></div><strong>D-23</strong></article>
+          <article class="mini-card"><span class="emoji mint">🌬️</span><div><h3>공기청정기 필터</h3><p>10월 1일 · 6개월마다</p></div><strong>D-31</strong></article>
+        </div>
+      </section>
+
+      <section class="calm-section">
+        <div class="calm-icon">✓</div><div><h3>나머지는 당분간 괜찮아요</h3><p>치과검진 외 3개 사이클은 아직 여유가 있어요.</p></div><button>확인하기 →</button>
+      </section>
+    </main>
+
+    <button class="fab" id="add-cycle"><span>＋</span> 새 사이클</button>
+  </div>
+
+  <dialog id="cycle-dialog">
+    <form method="dialog">
+      <div class="dialog-head"><div><span>NEW CYCLE</span><h2>새로운 주기를 기억할게요</h2></div><button value="cancel" aria-label="닫기">×</button></div>
+      <label>무엇을 관리할까요?<input id="cycle-name" placeholder="예: 칫솔 두 달마다 바꿔" autofocus /></label>
+      <div class="suggestions"><button type="button">🪴 식물 물주기</button><button type="button">💊 영양제 구매</button><button type="button">🧹 대청소</button></div>
+      <p class="agent-hint">✦ 자연스럽게 말해도 주기와 알림 시점을 알아들어요.</p>
+      <button class="dialog-submit" value="default">사이클 만들기 →</button>
+    </form>
+  </dialog>
+  <div class="toast" role="status">완료 기록을 남겼어요. 다음 주기를 시작합니다.</div>
+  <script src="/app.js"></script>
+</body>
+</html>
