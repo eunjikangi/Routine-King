@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f7f6f2" />
+  <meta name="theme-color" content="#f5f4ef" />
+  <meta name="description" content="반복되는 생활의 주기를 대신 기억하고, 필요한 순간에 알려주는 라이프 사이클 매니저" />
   <title>Routine King — 기억하지 않아도 되는 삶</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,88 +13,113 @@
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar">
-      <a class="brand" href="#" aria-label="Routine King 홈">
-        <span class="brand-mark">R</span><span>Routine King</span>
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#home" aria-label="Routine King 홈">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span>Routine King</span>
       </a>
-      <nav aria-label="주요 메뉴">
-        <a class="nav-item active" href="#"><span>⌂</span> 홈</a>
-        <a class="nav-item" href="#cycles"><span>↻</span> 내 사이클 <b>9</b></a>
-        <a class="nav-item" href="#history"><span>◷</span> 기록</a>
-        <a class="nav-item" href="#insights"><span>✦</span> 인사이트</a>
+
+      <nav class="primary-nav" aria-label="주요 메뉴">
+        <a class="nav-item" data-route="home" href="#home"><span aria-hidden="true">⌂</span> 홈</a>
+        <a class="nav-item" data-route="cycles" href="#cycles"><span aria-hidden="true">↻</span> 내 사이클 <b id="cycle-count">0</b></a>
+        <a class="nav-item" data-route="history" href="#history"><span aria-hidden="true">◷</span> 기록</a>
+        <a class="nav-item" data-route="insights" href="#insights"><span aria-hidden="true">✦</span> 인사이트</a>
       </nav>
-      <div class="nav-label">카테고리</div>
-      <nav class="category-nav">
-        <a href="#">🏠 <span>집</span><b>3</b></a><a href="#">🧴 <span>생활</span><b>2</b></a>
-        <a href="#">💆🏻‍♀️ <span>뷰티</span><b>2</b></a><a href="#">🏥 <span>건강</span><b>2</b></a>
-        <a class="add-category" href="#">＋ 새 카테고리</a>
-      </nav>
+
+      <p class="nav-label">카테고리</p>
+      <nav class="category-nav" id="category-nav" aria-label="카테고리"></nav>
+
       <div class="sidebar-bottom">
-        <button class="settings">⚙ &nbsp; 설정</button>
-        <div class="profile"><div class="avatar">민</div><div><strong>민지</strong><small>minji@email.com</small></div><span>•••</span></div>
+        <button class="settings" id="open-settings" type="button"><span aria-hidden="true">⚙</span> 설정</button>
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">민</div>
+          <div><strong>민지</strong><small>나만의 루틴 공간</small></div>
+          <span aria-hidden="true">•••</span>
+        </div>
       </div>
     </aside>
+    <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="메뉴 닫기"></button>
 
     <main>
-      <header>
-        <button class="mobile-menu" aria-label="메뉴 열기">☰</button>
-        <div><p class="eyebrow">2026년 8월 31일 월요일</p><h1>좋은 아침이에요, 민지님 <span>👋</span></h1></div>
-        <button class="icon-button" aria-label="알림">♧<i></i></button>
+      <header class="topbar">
+        <button class="mobile-menu icon-button" id="mobile-menu" type="button" aria-label="메뉴 열기">☰</button>
+        <div class="page-intro">
+          <p class="eyebrow" id="today-label"></p>
+          <h1 id="page-title">좋은 하루예요, 민지님 <span aria-hidden="true">👋</span></h1>
+        </div>
+        <button class="icon-button notification-button" type="button" aria-label="알림"><span aria-hidden="true">♧</span><i></i></button>
       </header>
 
-      <section class="briefing">
-        <div class="brief-icon">✦</div>
-        <div class="brief-copy"><span>오늘의 라이프 브리핑</span><p>지금 챙길 일은 <strong>2개</strong>예요. 칫솔 교체가 3일 지났고,<br>고양이 모래도 이틀 정도 남았어요.</p></div>
-        <button>자세히 보기 <span>→</span></button>
-      </section>
-
-      <section class="status-section" id="cycles">
-        <div class="section-heading"><div><h2><span class="dot red"></span> 지금 챙겨야 해요</h2><p>예정일이 지났거나 얼마 남지 않은 항목이에요.</p></div><button class="text-button">전체 보기 &nbsp;→</button></div>
-        <div class="card-grid urgent-grid">
-          <article class="cycle-card urgent" data-name="칫솔 교체">
-            <div class="card-top"><span class="emoji pink">🪥</span><button class="more">•••</button></div>
-            <div class="card-title"><div><h3>칫솔 교체</h3><span>생활</span></div><strong>D+3</strong></div>
-            <div class="progress"><i style="width:100%"></i></div>
-            <div class="cycle-meta"><span>마지막 교체 <b>6월 28일</b></span><span>주기 <b>2개월</b></span></div>
-            <button class="complete">✓ &nbsp; 완료했어요</button>
-          </article>
-          <article class="cycle-card warning" data-name="고양이 모래">
-            <div class="card-top"><span class="emoji yellow">🐱</span><button class="more">•••</button></div>
-            <div class="card-title"><div><h3>고양이 모래</h3><span>반려동물</span></div><strong>약 2일</strong></div>
-            <div class="progress"><i style="width:92%"></i></div>
-            <div class="cycle-meta"><span>마지막 구매 <b>8월 9일</b></span><span>평균 <b>24일</b></span></div>
-            <button class="complete">✓ &nbsp; 구매했어요</button>
-          </article>
-        </div>
-      </section>
-
-      <section class="status-section upcoming">
-        <div class="section-heading"><div><h2><span class="dot amber"></span> 곧 돌아와요</h2><p>앞으로 30일 안에 돌아오는 사이클이에요.</p></div><button class="text-button">전체 보기 &nbsp;→</button></div>
-        <div class="card-grid compact-grid">
-          <article class="mini-card"><span class="emoji lavender">💆🏻‍♀️</span><div><h3>피부관리</h3><p>9월 12일 · 3개월마다</p></div><strong>D-12</strong></article>
-          <article class="mini-card"><span class="emoji peach">✂️</span><div><h3>미용실</h3><p>9월 23일 · 평균 7주</p></div><strong>D-23</strong></article>
-          <article class="mini-card"><span class="emoji mint">🌬️</span><div><h3>공기청정기 필터</h3><p>10월 1일 · 6개월마다</p></div><strong>D-31</strong></article>
-        </div>
-      </section>
-
-      <section class="calm-section">
-        <div class="calm-icon">✓</div><div><h3>나머지는 당분간 괜찮아요</h3><p>치과검진 외 3개 사이클은 아직 여유가 있어요.</p></div><button>확인하기 →</button>
-      </section>
+      <div id="app-content" tabindex="-1"></div>
     </main>
 
-    <button class="fab" id="add-cycle"><span>＋</span> 새 사이클</button>
+    <button class="fab" id="add-cycle" type="button"><span aria-hidden="true">＋</span> 새 사이클</button>
   </div>
 
-  <dialog id="cycle-dialog">
-    <form method="dialog">
-      <div class="dialog-head"><div><span>NEW CYCLE</span><h2>새로운 주기를 기억할게요</h2></div><button value="cancel" aria-label="닫기">×</button></div>
-      <label>무엇을 관리할까요?<input id="cycle-name" placeholder="예: 칫솔 두 달마다 바꿔" autofocus /></label>
-      <div class="suggestions"><button type="button">🪴 식물 물주기</button><button type="button">💊 영양제 구매</button><button type="button">🧹 대청소</button></div>
-      <p class="agent-hint">✦ 자연스럽게 말해도 주기와 알림 시점을 알아들어요.</p>
-      <button class="dialog-submit" value="default">사이클 만들기 →</button>
+  <dialog id="cycle-dialog" class="modal">
+    <form id="cycle-form">
+      <div class="dialog-head">
+        <div><span id="dialog-eyebrow">NEW CYCLE</span><h2 id="dialog-title">새로운 주기를 기억할게요</h2></div>
+        <button class="dialog-close" type="button" data-close="cycle-dialog" aria-label="닫기">×</button>
+      </div>
+      <input id="cycle-id" type="hidden" />
+      <div class="field full-field">
+        <label for="cycle-name">무엇을 관리할까요?</label>
+        <input id="cycle-name" name="name" maxlength="40" placeholder="예: 칫솔 교체" required />
+      </div>
+      <div class="suggestions" aria-label="추천 사이클">
+        <button type="button" data-preset="식물 물주기|집|🪴|7">🪴 식물 물주기</button>
+        <button type="button" data-preset="영양제 구매|건강|💊|30">💊 영양제 구매</button>
+        <button type="button" data-preset="대청소|집|🧹|30">🧹 대청소</button>
+      </div>
+      <div class="form-grid">
+        <div class="field emoji-field">
+          <label for="cycle-emoji">아이콘</label>
+          <input id="cycle-emoji" name="emoji" maxlength="4" value="✨" required />
+        </div>
+        <div class="field">
+          <label for="cycle-category">카테고리</label>
+          <select id="cycle-category" name="category" required></select>
+        </div>
+        <div class="field">
+          <label for="cycle-interval">반복 주기</label>
+          <div class="input-suffix"><input id="cycle-interval" name="interval" type="number" min="1" max="3650" value="30" required /><span>일마다</span></div>
+        </div>
+        <div class="field">
+          <label for="cycle-last-date">마지막 완료일</label>
+          <input id="cycle-last-date" name="lastDate" type="date" required />
+        </div>
+        <div class="field full-field">
+          <label for="cycle-reminder">미리 알려주기</label>
+          <div class="input-suffix"><input id="cycle-reminder" name="reminder" type="number" min="0" max="365" value="7" required /><span>일 전부터</span></div>
+        </div>
+      </div>
+      <p class="agent-hint">✦ 주기와 마지막 완료일을 바탕으로 다음 날짜를 자동 계산해요.</p>
+      <div class="dialog-actions">
+        <button class="danger-button" id="delete-cycle" type="button" hidden>사이클 삭제</button>
+        <button class="secondary-button" type="button" data-close="cycle-dialog">취소</button>
+        <button class="primary-button" type="submit">사이클 저장 <span aria-hidden="true">→</span></button>
+      </div>
     </form>
   </dialog>
-  <div class="toast" role="status">완료 기록을 남겼어요. 다음 주기를 시작합니다.</div>
+
+  <dialog id="settings-dialog" class="modal settings-dialog">
+    <div class="dialog-head">
+      <div><span>SETTINGS</span><h2>내 데이터 관리</h2></div>
+      <button class="dialog-close" type="button" data-close="settings-dialog" aria-label="닫기">×</button>
+    </div>
+    <p class="settings-copy">현재 사이클과 기록은 이 브라우저에만 안전하게 저장돼요.</p>
+    <div class="settings-actions">
+      <button id="export-data" class="settings-card" type="button"><span>↓</span><div><strong>백업 파일 받기</strong><small>모든 사이클과 기록을 JSON으로 저장</small></div></button>
+      <button id="import-data" class="settings-card" type="button"><span>↑</span><div><strong>백업 불러오기</strong><small>이전에 저장한 데이터를 복원</small></div></button>
+      <button id="reset-data" class="settings-card danger" type="button"><span>↺</span><div><strong>예시 데이터로 초기화</strong><small>현재 데이터는 모두 지워져요</small></div></button>
+    </div>
+    <input id="import-file" type="file" accept="application/json" hidden />
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-message"></span><button id="toast-action" type="button" hidden></button></div>
+  <noscript><p class="noscript">Routine King을 사용하려면 JavaScript를 켜주세요.</p></noscript>
+  <script src="./core.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
