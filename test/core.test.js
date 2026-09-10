@@ -41,3 +41,13 @@ test('normalizes invalid imported state fields', () => {
   assert.equal(state.records[0].category, '기타');
   assert.equal(state.records[0].completedAt, '2026-09-02');
 });
+
+test('catalog offers unique presets across every selectable category', () => {
+  const selectableCategories = Object.keys(core.CATEGORIES).filter(name => name !== '기타');
+  const ids = core.CATALOG.map(item => item.id);
+  assert.equal(new Set(ids).size, ids.length);
+  assert.ok(core.CATALOG.length >= 25);
+  for (const category of selectableCategories) {
+    assert.ok(core.CATALOG.filter(item => item.category === category).length >= 5, category);
+  }
+});

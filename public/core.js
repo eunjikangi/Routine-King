@@ -14,6 +14,38 @@
     '기타': { icon: '✨', tone: 'sky' }
   };
 
+  const CATALOG = [
+    { id: 'bedding', name: '침구 세탁', category: '집', emoji: '🛏️', intervalDays: 14, reminderDays: 3, action: '세탁했어요', description: '이불과 베개 커버를 산뜻하게' },
+    { id: 'air-filter', name: '공기청정기 필터', category: '집', emoji: '🌬️', intervalDays: 180, reminderDays: 14, action: '교체했어요', description: '깨끗한 실내 공기를 위해' },
+    { id: 'water-filter', name: '정수기 필터', category: '집', emoji: '💧', intervalDays: 120, reminderDays: 14, action: '교체했어요', description: '필터 교체 시기를 놓치지 않게' },
+    { id: 'deep-clean', name: '집 대청소', category: '집', emoji: '🧹', intervalDays: 30, reminderDays: 5, action: '청소했어요', description: '한 달에 한 번 집 전체 정돈' },
+    { id: 'ac-filter', name: '에어컨 필터 청소', category: '집', emoji: '❄️', intervalDays: 30, reminderDays: 5, action: '청소했어요', description: '냉방 효율과 공기 질 관리' },
+
+    { id: 'toothbrush', name: '칫솔 교체', category: '생활', emoji: '🪥', intervalDays: 60, reminderDays: 7, action: '교체했어요', description: '칫솔모가 닳기 전에 새 칫솔로' },
+    { id: 'razor', name: '면도날 교체', category: '생활', emoji: '🪒', intervalDays: 21, reminderDays: 3, action: '교체했어요', description: '피부 자극 없이 깔끔하게' },
+    { id: 'washer-clean', name: '세탁조 청소', category: '생활', emoji: '🫧', intervalDays: 30, reminderDays: 5, action: '청소했어요', description: '세탁기 안쪽까지 위생적으로' },
+    { id: 'towel-refresh', name: '수건 교체', category: '생활', emoji: '🧺', intervalDays: 365, reminderDays: 21, action: '교체했어요', description: '오래된 수건을 보송한 수건으로' },
+    { id: 'shoe-clean', name: '운동화 세탁', category: '생활', emoji: '👟', intervalDays: 60, reminderDays: 7, action: '세탁했어요', description: '자주 신는 신발을 깨끗하게' },
+
+    { id: 'skincare', name: '피부관리', category: '뷰티', emoji: '💆🏻‍♀️', intervalDays: 90, reminderDays: 14, action: '다녀왔어요', description: '정기적인 피부 컨디션 관리' },
+    { id: 'haircut', name: '미용실', category: '뷰티', emoji: '✂️', intervalDays: 49, reminderDays: 7, action: '다녀왔어요', description: '헤어스타일을 단정하게 유지' },
+    { id: 'brush-clean', name: '메이크업 브러시 세척', category: '뷰티', emoji: '🖌️', intervalDays: 14, reminderDays: 2, action: '세척했어요', description: '피부에 닿는 도구를 청결하게' },
+    { id: 'nail-care', name: '네일 관리', category: '뷰티', emoji: '💅', intervalDays: 28, reminderDays: 5, action: '관리했어요', description: '손끝 컨디션을 일정하게' },
+    { id: 'cosmetics-check', name: '화장품 정리', category: '뷰티', emoji: '🧴', intervalDays: 90, reminderDays: 7, action: '정리했어요', description: '사용 기한과 남은 양 점검' },
+
+    { id: 'supplements', name: '영양제 구매', category: '건강', emoji: '💊', intervalDays: 30, reminderDays: 5, action: '구매했어요', description: '떨어지기 전에 미리 준비' },
+    { id: 'dental', name: '치과 검진', category: '건강', emoji: '🦷', intervalDays: 180, reminderDays: 21, action: '다녀왔어요', description: '정기 검진으로 치아 건강 관리' },
+    { id: 'eye-exam', name: '시력 검사', category: '건강', emoji: '👓', intervalDays: 365, reminderDays: 30, action: '검사했어요', description: '눈의 변화를 정기적으로 확인' },
+    { id: 'health-check', name: '건강검진', category: '건강', emoji: '🩺', intervalDays: 365, reminderDays: 30, action: '검진했어요', description: '한 해의 건강 상태 점검' },
+    { id: 'medicine-check', name: '상비약 점검', category: '건강', emoji: '🩹', intervalDays: 180, reminderDays: 14, action: '점검했어요', description: '유효기간과 부족한 약 확인' },
+
+    { id: 'cat-litter', name: '고양이 모래', category: '반려동물', emoji: '🐱', intervalDays: 24, reminderDays: 5, action: '구매했어요', description: '모래가 떨어지기 전에 미리 준비' },
+    { id: 'pet-bath', name: '반려동물 목욕', category: '반려동물', emoji: '🛁', intervalDays: 30, reminderDays: 5, action: '목욕했어요', description: '피부와 털을 깨끗하게 관리' },
+    { id: 'heartworm', name: '심장사상충 예방', category: '반려동물', emoji: '🐾', intervalDays: 30, reminderDays: 5, action: '투약했어요', description: '매달 예방약 일정을 놓치지 않게' },
+    { id: 'pet-nails', name: '발톱 관리', category: '반려동물', emoji: '🐶', intervalDays: 28, reminderDays: 5, action: '관리했어요', description: '편안한 걸음을 위한 정기 관리' },
+    { id: 'pet-checkup', name: '동물병원 검진', category: '반려동물', emoji: '🏥', intervalDays: 180, reminderDays: 21, action: '다녀왔어요', description: '반려동물의 건강 상태 확인' }
+  ];
+
   function toISO(date) {
     const value = date instanceof Date ? date : new Date(date);
     const year = value.getFullYear();
@@ -123,7 +155,8 @@
       reminderDays: Math.max(0, Number(item.reminderDays) || 0),
       lastCompletedAt: isISODate(item.lastCompletedAt) ? item.lastCompletedAt : today,
       createdAt: item.createdAt || today,
-      action: String(item.action || '완료했어요')
+      action: String(item.action || '완료했어요'),
+      templateId: item.templateId ? String(item.templateId) : undefined
     }));
     const records = value.records.filter(Boolean).map(item => ({
       id: String(item.id || createId('record')),
@@ -176,7 +209,7 @@
   }
 
   return {
-    CATEGORIES, addDays, categoryCounts, completeCycle, createDefaultState, createId,
+    CATEGORIES, CATALOG, addDays, categoryCounts, completeCycle, createDefaultState, createId,
     dayDifference, formatDate, formatInterval, fromISO, getCycleStatus, groupCycles,
     normalizeState, toISO
   };

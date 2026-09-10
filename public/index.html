@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f5f4ef" />
+  <meta name="theme-color" content="#f5f5f7" />
   <meta name="description" content="반복되는 생활의 주기를 대신 기억하고, 필요한 순간에 알려주는 라이프 사이클 매니저" />
   <title>Routine King — 기억하지 않아도 되는 삶</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -53,8 +50,19 @@
       <div id="app-content" tabindex="-1"></div>
     </main>
 
-    <button class="fab" id="add-cycle" type="button"><span aria-hidden="true">＋</span> 새 사이클</button>
+    <button class="fab" id="add-cycle" type="button"><span aria-hidden="true">＋</span> 사이클 추가</button>
   </div>
+
+  <dialog id="catalog-dialog" class="modal catalog-dialog">
+    <div class="dialog-head catalog-head">
+      <div><span>CYCLE LIBRARY</span><h2>어떤 생활 주기를 기억할까요?</h2><p>카테고리를 고른 다음 필요한 항목을 선택하세요.</p></div>
+      <button class="dialog-close" type="button" data-close="catalog-dialog" aria-label="닫기">×</button>
+    </div>
+    <label class="catalog-search"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="항목 검색" aria-label="추가할 항목 검색" /></label>
+    <nav class="catalog-tabs" id="catalog-tabs" aria-label="사이클 카테고리"></nav>
+    <div class="catalog-meta"><strong id="catalog-title"></strong><span id="catalog-count"></span></div>
+    <section class="catalog-grid" id="catalog-grid" aria-live="polite"></section>
+  </dialog>
 
   <dialog id="cycle-dialog" class="modal">
     <form id="cycle-form">
@@ -63,14 +71,11 @@
         <button class="dialog-close" type="button" data-close="cycle-dialog" aria-label="닫기">×</button>
       </div>
       <input id="cycle-id" type="hidden" />
+      <input id="cycle-template-id" type="hidden" />
+      <input id="cycle-action" type="hidden" />
       <div class="field full-field">
         <label for="cycle-name">무엇을 관리할까요?</label>
         <input id="cycle-name" name="name" maxlength="40" placeholder="예: 칫솔 교체" required />
-      </div>
-      <div class="suggestions" aria-label="추천 사이클">
-        <button type="button" data-preset="식물 물주기|집|🪴|7">🪴 식물 물주기</button>
-        <button type="button" data-preset="영양제 구매|건강|💊|30">💊 영양제 구매</button>
-        <button type="button" data-preset="대청소|집|🧹|30">🧹 대청소</button>
       </div>
       <div class="form-grid">
         <div class="field emoji-field">
@@ -97,6 +102,7 @@
       <p class="agent-hint">✦ 주기와 마지막 완료일을 바탕으로 다음 날짜를 자동 계산해요.</p>
       <div class="dialog-actions">
         <button class="danger-button" id="delete-cycle" type="button" hidden>사이클 삭제</button>
+        <button class="secondary-button" id="back-to-catalog" type="button" hidden>다른 항목 고르기</button>
         <button class="secondary-button" type="button" data-close="cycle-dialog">취소</button>
         <button class="primary-button" type="submit">사이클 저장 <span aria-hidden="true">→</span></button>
       </div>
