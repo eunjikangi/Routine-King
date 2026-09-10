@@ -5,7 +5,7 @@ const path = require('node:path');
 const root = path.join(__dirname, 'public');
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' };
 
-const server = http.createServer((req, res) => {
+function handleRequest(req, res) {
   const pathname = req.url === '/' ? '/index.html' : req.url.split('?')[0];
   const file = path.normalize(path.join(root, pathname));
   if (!file.startsWith(root)) { res.writeHead(403); return res.end('Forbidden'); }
@@ -14,7 +14,10 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': `${types[path.extname(file)] || 'application/octet-stream'}; charset=utf-8` });
     res.end(data);
   });
-});
+}
+
+const server = http.createServer(handleRequest);
 
 if (require.main === module) server.listen(process.env.PORT || 4173, () => console.log('Routine King: http://localhost:4173'));
 module.exports = server;
+module.exports.handleRequest = handleRequest;

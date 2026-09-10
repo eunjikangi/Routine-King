@@ -5,6 +5,7 @@
   const STORAGE_KEY = 'routine-king-state-v1';
   const today = () => Core.toISO(new Date());
   const content = document.querySelector('#app-content');
+  const catalogDialog = document.querySelector('#catalog-dialog');
   const cycleDialog = document.querySelector('#cycle-dialog');
   const settingsDialog = document.querySelector('#settings-dialog');
   const cycleForm = document.querySelector('#cycle-form');
@@ -15,6 +16,8 @@
   const toastAction = document.querySelector('#toast-action');
   let toastTimer;
   let cycleSearch = '';
+  let catalogCategory = '집';
+  let catalogSearch = '';
 
   function escapeHTML(value) {
     return String(value)
@@ -279,28 +282,72 @@
     return '완료했어요';
   }
 
-  function openCycleDialog(cycleId) {
+  function isCatalogItemAdded(item) {
+    return state.cycles.some(cycle => cycle.templateId === item.id || cycle.id === item.id || cycle.name === item.name);
+  }
+
+  function renderCatalog() {
+    const categoryNames = Object.keys(Core.CATEGORIES).filter(name => name !== '기타');
+    document.querySelector('#catalog-tabs').innerHTML = categoryNames.map(name => {
+      const meta = Core.CATEGORIES[name];
+      const active = name === catalogCategory;
+      return `<button class="${active ? 'active' : ''}" type="button" data-catalog-category="${name}" aria-pressed="${active}"><span aria-hidden="true">${meta.icon}</span>${name}</button>`;
+    }).join('');
+
+    const query = catalogSearch.trim().toLocaleLowerCase('ko');
+    const items = Core.CATALOG.filter(item => item.category === catalogCategory)
+      .filter(item => !query || `${item.name} ${item.description}`.toLocaleLowerCase('ko').includes(query));
+    document.querySelector('#catalog-title').textContent = `${Core.CATEGORIES[catalogCategory].icon} ${catalogCategory}`;
+    document.querySelector('#catalog-count').textContent = `${items.length}개 항목`;
+    document.querySelector('#catalog-grid').innerHTML = items.length ? items.map(item => {
+      const added = isCatalogItemAdded(item);
+      return `<button class="catalog-item ${added ? 'added' : ''}" type="button" data-catalog-id="${item.id}" ${added ? 'disabled' : ''}>
+        <span class="catalog-emoji ${(Core.CATEGORIES[item.category] || Core.CATEGORIES['기타']).tone}" aria-hidden="true">${item.emoji}</span>
+        <span class="catalog-copy"><strong>${escapeHTML(item.name)}</strong><small>${escapeHTML(item.description)}</small><em>${Core.formatInterval(item.intervalDays)}</em></span>
+        <span class="catalog-add" aria-hidden="true">${added ? '추가됨' : '＋'}</span>
+      </button>`;
+    }).join('') : emptyState('⌕', '검색 결과가 없어요', '다른 검색어로 찾아보세요.');
+  }
+
+  function openCatalogDialog() {
+    catalogCategory = '집';
+    catalogSearch = '';
+    document.querySelector('#catalog-search').value = '';
+    renderCatalog();
+    catalogDialog.showModal();
+    setTimeout(() => document.querySelector('#catalog-search').focus(), 0);
+  }
+
+  function openCycleDialog(cycleId, preset) {
     const cycle = cycleId ? state.cycles.find(item => item.id === cycleId) : null;
+    const source = cycle || preset || {};
     cycleForm.reset();
     document.querySelector('#cycle-id').value = cycle?.id || '';
-    document.querySelector('#cycle-name').value = cycle?.name || '';
-    document.querySelector('#cycle-emoji').value = cycle?.emoji || '✨';
-    document.querySelector('#cycle-category').value = cycle?.category || '생활';
-    document.querySelector('#cycle-interval').value = cycle?.intervalDays || 30;
-    document.querySelector('#cycle-last-date').value = cycle?.lastCompletedAt || today();
-    document.querySelector('#cycle-reminder').value = cycle?.reminderDays ?? 7;
-    document.querySelector('#dialog-eyebrow').textContent = cycle ? 'EDIT CYCLE' : 'NEW CYCLE';
-    document.querySelector('#dialog-title').textContent = cycle ? '사이클을 다듬어볼까요?' : '새로운 주기를 기억할게요';
+    document.querySelector('#cycle-template-id').value = cycle?.templateId || preset?.id || '';
+    document.querySelector('#cycle-action').value = source.action || inferAction(source.name || '');
+    const nameInput = document.querySelector('#cycle-name');
+    const categoryInput = document.querySelector('#cycle-category');
+    nameInput.value = source.name || '';
+    nameInput.readOnly = Boolean(preset && !cycle);
+    document.querySelector('#cycle-emoji').value = source.emoji || '✨';
+    categoryInput.value = source.category || '생활';
+    categoryInput.disabled = Boolean(preset && !cycle);
+    document.querySelector('#cycle-interval').value = source.intervalDays || 30;
+    document.querySelector('#cycle-last-date').value = source.lastCompletedAt || today();
+    document.querySelector('#cycle-reminder').value = source.reminderDays ?? 7;
+    document.querySelector('#dialog-eyebrow').textContent = cycle ? 'EDIT CYCLE' : 'ADD CYCLE';
+    document.querySelector('#dialog-title').textContent = cycle ? '사이클을 다듬어볼까요?' : '선택한 주기를 시작할까요?';
     document.querySelector('#delete-cycle').hidden = !cycle;
+    document.querySelector('#back-to-catalog').hidden = Boolean(cycle);
     cycleDialog.showModal();
-    setTimeout(() => document.querySelector('#cycle-name').focus(), 0);
+    setTimeout(() => document.querySelector(cycle ? '#cycle-name' : '#cycle-last-date').focus(), 0);
   }
 
   function handleContentClick(event) {
     const button = event.target.closest('[data-action]');
     if (!button) return;
     const { action, id } = button.dataset;
-    if (action === 'add') openCycleDialog();
+    if (action === 'add') openCatalogDialog();
     if (action === 'edit') openCycleDialog(id);
     if (action === 'brief-details') document.querySelector('#attention-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (action === 'complete') {
@@ -322,6 +369,7 @@
     event.preventDefault();
     if (!cycleForm.reportValidity()) return;
     const id = document.querySelector('#cycle-id').value;
+    const templateId = document.querySelector('#cycle-template-id').value;
     const name = document.querySelector('#cycle-name').value.trim();
     const values = {
       name,
@@ -330,7 +378,8 @@
       intervalDays: Number(document.querySelector('#cycle-interval').value),
       lastCompletedAt: document.querySelector('#cycle-last-date').value,
       reminderDays: Number(document.querySelector('#cycle-reminder').value),
-      action: inferAction(name)
+      action: document.querySelector('#cycle-action').value || inferAction(name),
+      templateId: templateId || undefined
     };
     if (id) {
       const index = state.cycles.findIndex(item => item.id === id);
@@ -366,23 +415,38 @@
     });
   });
 
-  document.querySelectorAll('[data-preset]').forEach(button => {
-    button.addEventListener('click', () => {
-      const [name, category, emoji, interval] = button.dataset.preset.split('|');
-      document.querySelector('#cycle-name').value = name;
-      document.querySelector('#cycle-category').value = category;
-      document.querySelector('#cycle-emoji').value = emoji;
-      document.querySelector('#cycle-interval').value = interval;
-    });
+  document.querySelector('#back-to-catalog').addEventListener('click', () => {
+    cycleDialog.close();
+    renderCatalog();
+    catalogDialog.showModal();
   });
 
-  [cycleDialog, settingsDialog].forEach(dialog => {
+  document.querySelector('#catalog-tabs').addEventListener('click', event => {
+    const button = event.target.closest('[data-catalog-category]');
+    if (!button) return;
+    catalogCategory = button.dataset.catalogCategory;
+    renderCatalog();
+  });
+  document.querySelector('#catalog-search').addEventListener('input', event => {
+    catalogSearch = event.target.value;
+    renderCatalog();
+  });
+  document.querySelector('#catalog-grid').addEventListener('click', event => {
+    const button = event.target.closest('[data-catalog-id]');
+    if (!button || button.disabled) return;
+    const item = Core.CATALOG.find(entry => entry.id === button.dataset.catalogId);
+    if (!item) return;
+    catalogDialog.close();
+    openCycleDialog(null, item);
+  });
+
+  [catalogDialog, cycleDialog, settingsDialog].forEach(dialog => {
     dialog.addEventListener('click', event => {
       if (event.target === dialog) dialog.close();
     });
   });
 
-  document.querySelector('#add-cycle').addEventListener('click', () => openCycleDialog());
+  document.querySelector('#add-cycle').addEventListener('click', openCatalogDialog);
   document.querySelector('#mobile-menu').addEventListener('click', () => {
     sidebar.classList.add('open');
     scrim.classList.add('show');
